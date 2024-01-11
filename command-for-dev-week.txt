@@ -13,6 +13,7 @@ docker pull pomdockercpe/docker-example-1:example
 docker image ls
 docker run --name my-first-pull --rm -d pomdockercpe/docker-example-1:example
 docker ps
+http://localhost:3000
 docker stop my-first-pull
 docker ps -a
 docker run --name my-first-pull --rm -d -p 3000:3000 pomdockercpe/docker-example-1:example
