@@ -287,6 +287,8 @@ kubectl delete deployment first-app-deployment
 
 
 -----------------------------
+kubectl apply
+
 
 
 
