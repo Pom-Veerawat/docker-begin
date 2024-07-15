@@ -1,0 +1,4 @@
+cd K8s-PV-PVC
+docker compose up
+- เล่น ด้วย postman - volumes
+

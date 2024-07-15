@@ -329,4 +329,4 @@ kubectl apply -f=master-deployment.yaml
 kubectl apply -f=deployment.yaml,service.yaml
 
 ------
-next the volumn
+next the volumes
