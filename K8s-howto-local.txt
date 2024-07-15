@@ -44,6 +44,7 @@ http://127.0.0.1:57488/api/v1/namespaces/kubernetes-dashboard/services/http:kube
 
 
 ----
+ideas behind K8s = Compose not just only docker we need to control the Pods (using Deployments)
 
 Objects
 
@@ -56,18 +57,162 @@ Pods
 
 
 Deployments
+- It is Controls (Controller)
+    (Define what we want then K8s will do everything)
+    (Auto Scaling)
+
 Services
 Volume
 
 
+
+
 -----
 
+Deploy first deployment to cluster
+
+cd K8s
+
+-first build image (K8s will still need Docker)
+
+docker build -t kube-first-app .
+
+- setup deployment for pod to read image
+
+- checking
+
+minikube status
+
+-(if not run minikube start --driver=docker)
+
+kubectrl 
 คำสั่งต่างๆ
 
 menu    verb     action
 kubectl get 
-        set
+        create
         delete
+        help
+
+-ต่อ แบบ imperative ก่อนนะ
+-create deployment with image
+
+kubectl get deployments
+
+kubectl create deployment first-app-deployment --image=kube-first-app:latest
+-ดูชื่อ image จาก docker
+kubectl get deployments
+
+-get inside
+kubectl get pods
+-error STATUS ImagePullBackOff
+-หา image ไม่เจอเพราะอยุ่ใน local machine 
+-มันจะอ่านผ่าน registry
+
+-ลบก่อน
+kubectl delete deployment first-app-deployment
+
+-push image to docker hub public ได้ใช้ฟรีก่อน
+(ทำแบบไหนก็ได้ ผ่าน docker hub ก็ได้)
+-retag pomdockercpe/kube-first-app:tagname
+docker tag kube-first-app pomdockercpe/kube-first-app
+(docker push pomdockercpe/kube-first-app or GUI)
+
+-deploy k8s ใหม่
+kubectl create deployment first-app-deployment --image=pomdockercpe/kube-first-app
+kubectl get deployments
+kubectl get pods
+
+minikube dashboard
+
+good job you are now create your first Kube
+
+-----------------------
+
+keywords
+--
+minikube
+kubectl
+masternode
+workernode
+kublet
+pod
+--
+
+----------------
+new Objects
+Service
+    Pod has internal ip address
+    will change and only inside
+    หา pod ไม่ได้ 
+
+    service มีหน้าที่ group ip ให้ pod
+    แถมยัง ส่งต่อไปข้างนอกด้วย
+
+-------------
+create service
+    type ClusterIP
+         NodePort
+         LoadBalancer
+
+ถ้ามี pod แล้ว
+kubectl expose deployment first-app-deployment --type=LoadBalancer --port=8080  
+-8080 เพราะ app มัน 8080
+
+kubectl get service
+kubectl get services
+-first-app-deployment   LoadBalancer   10.96.11.229   <pending>     8080:31608/TCP   78s
+-External ip ไม่มี
+-แต่ถ้าไปบน cloud จะมี
+
+
+ลอง ใช้ minikube สร้าง ทางเชื่อมให้
+minikube service first-app-deployment
+***มีสอง ip แต่ถ้า ใช้ docker ต้องใช้ tunnel
+
+ลองเข้า /error
+
+kubectl get pod
+-first-app-deployment-f8d68cb5f-c5slh   1/1     Running   1 (2m14s ago)   29m
+
+-หรือลองไปดู minikube dashboard
+
+-Scaling กัน
+
+kubectrl scale deployment/first-app-deployment --replicas=3
+
+kubectl get pod
+NAME                                   READY   STATUS    RESTARTS        AGE
+first-app-deployment-f8d68cb5f-c5slh   1/1     Running   1 (9m11s ago)   36m
+first-app-deployment-f8d68cb5f-cjwsc   1/1     Running   0               16s
+first-app-deployment-f8d68cb5f-rcr5f   1/1     Running   0               16s
+
+minikube service first-app-deployment
+
+kubectl get pod
+NAME                                   READY   STATUS    RESTARTS      AGE
+first-app-deployment-f8d68cb5f-c5slh   1/1     Running   2 (32s ago)   39m
+first-app-deployment-f8d68cb5f-cjwsc   0/1     Error     1 (32s ago)   2m50s
+first-app-deployment-f8d68cb5f-rcr5f   1/1     Running   1 (32s ago)   2m50s
+
+NAME                                   READY   STATUS    RESTARTS      AGE
+first-app-deployment-f8d68cb5f-c5slh   1/1     Running   2 (52s ago)   39m
+first-app-deployment-f8d68cb5f-cjwsc   1/1     Running   2 (32s ago)   3m10s
+first-app-deployment-f8d68cb5f-rcr5f   1/1     Running   1 (52s ago)   3m10s
+
+minikube dashboard
+
+kubectl scale deployment/first-app-deployment --replicas=1
+
+kubectl get pod
+
+NAME                                   READY   STATUS        RESTARTS        AGE
+first-app-deployment-f8d68cb5f-c5slh   1/1     Terminating   2 (3m47s ago)   42m
+first-app-deployment-f8d68cb5f-cjwsc   1/1     Running       2 (3m27s ago)   6m5s
+first-app-deployment-f8d68cb5f-rcr5f   1/1     Terminating   1 (3m47s ago)   6m5s
+
+NAME                                   READY   STATUS    RESTARTS        AGE
+first-app-deployment-f8d68cb5f-cjwsc   1/1     Running   2 (3m57s ago)   6m35s
 
 
 
