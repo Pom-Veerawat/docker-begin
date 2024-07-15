@@ -1,0 +1,35 @@
+ลง 
+kubectl ก่อน
+https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
+
+เช็ก ด้วยคำสั่ง
+kubectl version --client
+
+ดู cluster ด้วย 
+kubectl cluster-info
+จะ fail ถ้า ยังไม่ได้ ลง cluster
+
+---ลง cluster Test ใน local ด้วย miniKube
+
+----
+minikube ทำให้ environment เราเป็น kube
+
+https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download
+
+สำคัญ**** ลง docker ก่อน และเปิดก่อน
+
+minikube start 
+
+มันจะ เลือกออโต้ให้เลยว่าเป็น docker
+
+
+minikub status
+ดูว่า เป็นไง
+
+กลับไปกด 
+kubectl cluster-info
+
+จะเห้นว่า มัน เชื่อม cluster เข้ามาใน minikube ใน docker แล้ว
+
+----
+
