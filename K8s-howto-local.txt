@@ -289,6 +289,35 @@ kubectl delete deployment first-app-deployment
 -----------------------------
 kubectl apply
 
+-ดู folder ด้วย
 
+kubectl apply -f=deployment.yaml
+kubectl get pod
+
+NAME                                     READY   STATUS    RESTARTS   AGE
+second-app-deployment-6f95d648b5-2nbwm   1/1     Running   0          12s
+second-app-deployment-6f95d648b5-54hkf   1/1     Running   0          12s
+second-app-deployment-6f95d648b5-mhxmj   1/1     Running   0          12s
+
+แต่ เข้าไปดูไม่ได้เพราะ ไม่มี service
+
+ต่อด้วย service
+** selector สำคัญมาก สามารถเล่น combination ต่างๆ ระหว่าง pod service ด้วย key pair value
+
+kubectl apply -f=service.yaml
+
+
+minikube service backend-node
+
+-แค่ เปลี่ยน yaml แล้ว apply ทุกอย่าง จบ เช่น replica , image
+-ยิ่งใช้ git จบเลย
+
+-ลบ yaml
+-สามารถ ลบ แบบ imperative ได้อยู่
+-หรือ
+
+kubectl delete -f=deployment.yaml,service.yaml
+
+หรือรวมไฟล์
 
 

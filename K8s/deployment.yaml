@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-app-deployment
+spec: 
+  replicas: 1
+  #สำคัญมาก
+  selector:
+    matchLabels:
+      app: second-app
+      #tier:xxx
+      #pom:pod1
+    #matchExporesssion:  
+  #ำคัญมาก
+  template: 
+    #kind: Pod ไม่จำเป็น
+    metadata: 
+      labels:
+        #อะไรก็ได้ แต่ต้องเหมือนกัน กับ อันอื่น tag: aaabbbb ก็ได้ ไม่ต้อง app, tier:xxx, pom:pod1
+        app: second-app 
+    spec:
+      #spec ของ pod ตรงนี้
+      containers:
+        - name: second-nodejs
+          image: pomdockercpe/kube-first-app:2
+        #- name: second-db
+           #image: xxxxx   
