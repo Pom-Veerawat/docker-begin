@@ -40,12 +40,27 @@ minikube dashboard
 
 http://127.0.0.1:57488/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/workloads?namespace=default
 
-----
-
 ดู web app
 
 
 ----
+
+Objects
+
+Pods
+- smallest unit
+    run one or multiple Container
+    shares variable (volumes)
+    cluster internal (cluster ip)
+    stateless remove = data loss
+
+
+Deployments
+Services
+Volume
+
+
+-----
 
 คำสั่งต่างๆ
 
