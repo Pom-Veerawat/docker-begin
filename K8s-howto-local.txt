@@ -90,6 +90,7 @@ kubectrl
 
 menu    verb     action
 kubectl get 
+        set
         create
         delete
         help
@@ -213,6 +214,79 @@ first-app-deployment-f8d68cb5f-rcr5f   1/1     Terminating   1 (3m47s ago)   6m5
 
 NAME                                   READY   STATUS    RESTARTS        AGE
 first-app-deployment-f8d68cb5f-cjwsc   1/1     Running   2 (3m57s ago)   6m35s
+
+-Change source code
+--
+
+docker build -t pomdockercpe/kube-first-app .
+
+docker push pomdockercpe/kube-first-app
+
+update kube
+1. check deployment is running
+    kubectl get deployments
+    kubectl set image deployment/first-app-deployment kube-first-app=pomdockercpe/kube-first-app
+
+2. nothing happen (เพราะว่า ต้องเปลี่ยน Tag)
+    docker build -t pomdockercpe/kube-first-app:2 .
+    docker push pomdockercpe/kube-first-app:2
+    kubectl set image deployment/first-app-deployment kube-first-app=pomdockercpe/kube-first-app:2
+    -deployment.apps/first-app-deployment image updated
+    kubectl rollout status deployment/first-app-deployment
+    kubectl get pod
+    kubectl get deployment
+    -ไปดุ dashboard
+    -ไปดู web node
+---
+roll back and backup
+
+kubectl set image deployment/first-app-deployment kube-first-app=pomdockercpe/kube-first-app:999111
+
+-deployment.apps/first-app-deployment image updated
+
+kubectl rollout status deployment/first-app-deployment
+-Waiting for deployment "first-app-deployment" rollout to finish: 1 old replicas are pending termination...
+
+kubectl get pod
+NAME                                    READY   STATUS             RESTARTS   AGE
+first-app-deployment-67d7b899c7-tcwcm   0/1     ImagePullBackOff   0          4m44s
+first-app-deployment-7cc6449cc5-66njs   1/1     Running            0          13m
+
+-ไม่ปิด ด้วยก่อนจะ update สำเร็จ ไป rollback กันเถอะ
+
+kubectl rollout undo deployment/first-app-deployment
+kubectl rollout status deployment/first-app-deployment
+kubectl get pod
+
+NAME                                    READY   STATUS    RESTARTS   AGE
+first-app-deployment-7cc6449cc5-66njs   1/1     Running   0          15m
+
+kubectl rollout history deployment/first-app-deployment
+
+deployment.apps/first-app-deployment 
+REVISION  CHANGE-CAUSE
+1         <none>
+3         <none>
+4         <none>
+
+kubectl rollout history deployment/first-app-deployment --revision=3
+kubectl rollout history deployment/first-app-deployment --revision=1
+
+-try to rollback to first one
+
+kubectl rollout undo deployment/first-app-deployment --to-revision=1
+-try visit website
+
+
+(ถ้าไม่มีอะไรเปลี่ยน ลอง ทำ tag3 แล้ว deploy แล้ว rollback มา 2)
+
+kubectl delete service first-app-deployment
+kubectl delete deployment first-app-deployment
+
+ถึงเวลาแล้ว เปลี่ยนจาก imperative ไป ยัง declartive
+
+
+-----------------------------
 
 
 
