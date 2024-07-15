@@ -23,7 +23,7 @@ minikube start
 มันจะ เลือกออโต้ให้เลยว่าเป็น docker
 
 
-minikub status
+minikube status
 ดูว่า เป็นไง
 
 กลับไปกด 
@@ -31,5 +31,28 @@ kubectl cluster-info
 
 จะเห้นว่า มัน เชื่อม cluster เข้ามาใน minikube ใน docker แล้ว
 
+
+ทำให้ชีวิตสบาย ด้วย GUI
+
+ลง dashboard ผ่าน docker
+
+minikube dashboard 
+
+http://127.0.0.1:57488/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/workloads?namespace=default
+
 ----
+
+ดู web app
+
+
+----
+
+คำสั่งต่างๆ
+
+menu    verb     action
+kubectl get 
+        set
+        delete
+
+
 
