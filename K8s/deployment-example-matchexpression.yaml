@@ -6,11 +6,12 @@ spec:
   replicas: 1
   #สำคัญมาก
   selector:
-    matchLabels:
-      app: second-app
+    #matchLabels:
+      #app: second-app
       #tier:xxx
       #pom:pod1
-    #matchExporesssion:  
+    matchExpressions:
+      - {key: app,operator: In, values: [first-app, second-app]}
   #ำคัญมาก
   template: 
     #kind: Pod ไม่จำเป็น
@@ -23,13 +24,5 @@ spec:
       containers:
         - name: second-nodejs
           image: pomdockercpe/kube-first-app:2
-          #imagePullPolicy: Always
-          livenessProbe:
-          #check ตาย จริงๆ เช็กอยู่แล้ว แต่ก็พอช่วยได้
-            httpGet:
-              path: /
-              port: 8080
-            periodSeconds: 10
-            initialDelaySeconds: 5    
         #- name: second-db
            #image: xxxxx   
